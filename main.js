@@ -30,7 +30,7 @@ else {
             },
         ]);
         console.log("\t");
-        //CHECK ACCOUNT BALANCE   
+        //CHECK ACCOUNT BALANCE
         if (userOperation.operation === "Check Balance") {
             console.log(`Your Account Balance is : ${accountBalance}\n`);
         }
@@ -43,15 +43,31 @@ else {
                     type: "number",
                 },
             ]);
-            if (withdrawAmount.withdraw <= accountBalance) {
+            // ATM Machine contains 500, 1000 and 5000 Notes
+            if (withdrawAmount.withdraw <= accountBalance &&
+                withdrawAmount.withdraw % 500 === 0 &&
+                withdrawAmount.withdraw <= 50000) {
                 accountBalance = accountBalance - withdrawAmount.withdraw;
                 console.log("\nTransaction Successful");
                 console.log(`Your Remaining Balance is : ${accountBalance}`);
                 break;
             }
             else {
-                console.log("\nSorry!! You have Insufficient Balance");
-                condition = false;
+                if (withdrawAmount.withdraw > accountBalance) {
+                    console.log("\nSorry!! You have Insufficient Balance");
+                    condition = false;
+                }
+                else if (withdrawAmount.withdraw % 500 !== 0) {
+                    console.log("\nTransaction Failed");
+                    console.log("Invalid Amount");
+                    console.log("Please enter a multiple of 500");
+                    condition = false;
+                }
+                else {
+                    console.log("\nTransaction Failed");
+                    console.log("Invalid Amount");
+                    condition = false;
+                }
             }
         }
         //CHOOSE THE AMOUNT FROM THE LIST TO FAST CASH WITHDRAWAL
@@ -75,7 +91,7 @@ else {
                 condition = false;
             }
         }
-        //EXIT TRANSACTION 
+        //EXIT TRANSACTION
         else if (userOperation.operation === "Exit") {
             condition = false;
         }
